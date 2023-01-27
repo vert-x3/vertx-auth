@@ -20,19 +20,9 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>vertx-auth-common</module>
     <module>vertx-auth-shiro</module>
     <module>vertx-auth-jdbc</module>
     <module>vertx-auth-mongo</module>
-    <module>vertx-auth-jwt</module>
-    <module>vertx-auth-ldap</module>
-    <module>vertx-auth-oauth2</module>
-    <module>vertx-auth-htdigest</module>
-    <module>vertx-auth-htpasswd</module>
-    <module>vertx-auth-webauthn</module>
-    <module>vertx-auth-properties</module>
-    <module>vertx-auth-sql-client</module>
-    <module>vertx-auth-otp</module>
   </modules>
 
   <parent>
