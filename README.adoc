@@ -2,6 +2,8 @@
 
 image:https://github.com/vert-x3/vertx-auth/workflows/CI/badge.svg?branch=master["Build Status", link="https://github.com/vert-x3/vertx-auth/actions?query=workflow%3ACI"]
 
-This module contains auth implementations for Vert.x and common auth interfaces
+This module contains auth implementations for
 
-Particular implementations are stored in sub modules.
+- vertx-auth-mongo
+- vertx-auth-jdbc
+- vertx-auth-shiro
