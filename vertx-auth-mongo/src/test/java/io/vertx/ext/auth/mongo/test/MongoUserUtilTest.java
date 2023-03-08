@@ -17,6 +17,7 @@
 package io.vertx.ext.auth.mongo.test;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.authorization.Authorization;
 import io.vertx.ext.auth.authorization.PermissionBasedAuthorization;
@@ -25,6 +26,7 @@ import io.vertx.ext.auth.mongo.*;
 import io.vertx.ext.mongo.MongoClient;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -58,9 +60,7 @@ public class MongoUserUtilTest extends MongoBaseTest {
     MongoUserUtil userUtil = MongoUserUtil.create(mongoClient);
     List<String> roles = Arrays.asList("a", "b");
     List<String> perms = Arrays.asList("c", "d");
-    JsonObject credentials = new JsonObject()
-      .put("username", "fizz")
-      .put("password", "buzz");
+    Credentials credentials = new UsernamePasswordCredentials("fizz", "buzz");
     userUtil
       .createUser("fizz", "buzz")
       .flatMap(id -> userUtil.createUserRolesAndPermissions("fizz", roles, perms))

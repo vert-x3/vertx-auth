@@ -17,8 +17,6 @@
 package io.vertx.ext.auth.mongo;
 
 import io.vertx.codegen.annotations.VertxGen;
-import io.vertx.core.Handler;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.authentication.AuthenticationProvider;
 import io.vertx.ext.auth.mongo.impl.MongoAuthenticationImpl;
 import io.vertx.ext.mongo.MongoClient;
@@ -50,20 +48,15 @@ public interface MongoAuthentication extends AuthenticationProvider {
 
   /**
    * The default name of the property for the username, like it is transported in credentials by method
-   * {@link #authenticate(JsonObject, Handler)}
+   * {@link #authenticate(io.vertx.ext.auth.authentication.Credentials)}
    */
   String DEFAULT_CREDENTIAL_USERNAME_FIELD = DEFAULT_USERNAME_FIELD;
 
   /**
    * The default name of the property for the password, like it is transported in credentials by method
-   * {@link #authenticate(JsonObject, Handler)}
+   * {@link #authenticate(io.vertx.ext.auth.authentication.Credentials)}
    */
   String DEFAULT_CREDENTIAL_PASSWORD_FIELD = DEFAULT_PASSWORD_FIELD;
-
-  /**
-   * The default name of the property for the salt field
-   */
-  String DEFAULT_SALT_FIELD = "salt";
 
   /**
    * Creates an instance of MongoAuth by using the given {@link MongoClient} and configuration object.
@@ -76,10 +69,6 @@ public interface MongoAuthentication extends AuthenticationProvider {
    */
   static MongoAuthentication create(MongoClient mongoClient, MongoAuthenticationOptions options) {
     return new MongoAuthenticationImpl(mongoClient, options);
-  }
-
-  static MongoAuthentication create(MongoClient mongoClient, HashStrategy hashStrategy, MongoAuthenticationOptions options) {
-    return new MongoAuthenticationImpl(mongoClient, hashStrategy, DEFAULT_SALT_FIELD, options);
   }
 
   /**

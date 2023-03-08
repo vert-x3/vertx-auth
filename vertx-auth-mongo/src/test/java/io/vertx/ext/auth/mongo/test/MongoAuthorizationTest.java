@@ -19,11 +19,12 @@ package io.vertx.ext.auth.mongo.test;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.Promise;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.ext.auth.authentication.Credentials;
+import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.authorization.PermissionBasedAuthorization;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.auth.mongo.MongoAuthorization;
@@ -90,57 +91,57 @@ public class MongoAuthorizationTest extends MongoAuthenticationTest {
 
   @Test
   public void testAuthoriseHasRole() {
-    JsonObject authInfo = new JsonObject();
-    authInfo.put(authenticationOptions.getUsernameField(), "tim").put(authenticationOptions.getPasswordField(), "sausages");
-    getAuthenticationProvider().authenticate(authInfo, onSuccess(user -> {
-      assertNotNull(user);
-      fillUserAuthorizations(user, onSuccess(has -> {
-        assertTrue(RoleBasedAuthorization.create("developer").match(user));
-        testComplete();
+    Credentials authInfo = new UsernamePasswordCredentials("tim", "sausages");
+    getAuthenticationProvider().authenticate(authInfo)
+      .onComplete(onSuccess(user -> {
+        assertNotNull(user);
+        fillUserAuthorizations(user, onSuccess(has -> {
+          assertTrue(RoleBasedAuthorization.create("developer").match(user));
+          testComplete();
+        }));
       }));
-    }));
     await();
   }
 
   @Test
   public void testAuthoriseNotHasRole() {
-    JsonObject authInfo = new JsonObject();
-    authInfo.put(authenticationOptions.getUsernameField(), "tim").put(authenticationOptions.getPasswordField(), "sausages");
-    getAuthenticationProvider().authenticate(authInfo, onSuccess(user -> {
-      assertNotNull(user);
-      fillUserAuthorizations(user, onSuccess(has -> {
-        assertFalse(RoleBasedAuthorization.create("manager").match(user));
-        testComplete();
+    Credentials authInfo = new UsernamePasswordCredentials("tim", "sausages");
+    getAuthenticationProvider().authenticate(authInfo)
+      .onComplete(onSuccess(user -> {
+        assertNotNull(user);
+        fillUserAuthorizations(user, onSuccess(has -> {
+          assertFalse(RoleBasedAuthorization.create("manager").match(user));
+          testComplete();
+        }));
       }));
-    }));
     await();
   }
 
   @Test
   public void testAuthoriseHasPermission() {
-    JsonObject authInfo = new JsonObject();
-    authInfo.put(authenticationOptions.getUsernameField(), "tim").put(authenticationOptions.getPasswordField(), "sausages");
-    getAuthenticationProvider().authenticate(authInfo, onSuccess(user -> {
-      assertNotNull(user);
-      fillUserAuthorizations(user, onSuccess(has -> {
-        assertTrue(PermissionBasedAuthorization.create("commit_code").match(user));
-        testComplete();
+    Credentials authInfo = new UsernamePasswordCredentials("tim", "sausages");
+    getAuthenticationProvider().authenticate(authInfo)
+      .onComplete(onSuccess(user -> {
+        assertNotNull(user);
+        fillUserAuthorizations(user, onSuccess(has -> {
+          assertTrue(PermissionBasedAuthorization.create("commit_code").match(user));
+          testComplete();
+        }));
       }));
-    }));
     await();
   }
 
   @Test
   public void testAuthoriseNotHasPermission() {
-    JsonObject authInfo = new JsonObject();
-    authInfo.put(authenticationOptions.getUsernameField(), "tim").put(authenticationOptions.getPasswordField(), "sausages");
-    getAuthenticationProvider().authenticate(authInfo, onSuccess(user -> {
-      assertNotNull(user);
-      fillUserAuthorizations(user, onSuccess(has -> {
-        assertFalse(PermissionBasedAuthorization.create("eat_sandwich").match(user));
-        testComplete();
+    Credentials authInfo = new UsernamePasswordCredentials("tim", "sausages");
+    getAuthenticationProvider().authenticate(authInfo)
+      .onComplete(onSuccess(user -> {
+        assertNotNull(user);
+        fillUserAuthorizations(user, onSuccess(has -> {
+          assertFalse(PermissionBasedAuthorization.create("eat_sandwich").match(user));
+          testComplete();
+        }));
       }));
-    }));
     await();
   }
 
@@ -156,7 +157,7 @@ public class MongoAuthorizationTest extends MongoAuthenticationTest {
     users.add(new InternalUser("Doublette", "ps2", null, null));
 
     users.add(new InternalUser("tim", "sausages", Arrays.asList("morris_dancer", "superadmin", "developer"), Arrays
-        .asList("commit_code", "merge_pr", "do_actual_work", "bang_sticks")));
+      .asList("commit_code", "merge_pr", "do_actual_work", "bang_sticks")));
     return users;
   }
 
@@ -172,23 +173,22 @@ public class MongoAuthorizationTest extends MongoAuthenticationTest {
     insertUser(getAuthenticationProvider(), authenticationOptions, user.username, user.password)
       .compose(res -> insertAuth(user.username, user.roles, user.permissions)
       ).onComplete(res -> {
-      if (res.succeeded()) {
-        log.info("user added: " + user.username);
-        latch.countDown();
-      } else {
-        log.error("", res.cause());
-        buffer.append("false");
-      }
-      intLatch.countDown();
-    });
+        if (res.succeeded()) {
+          log.info("user added: " + user.username);
+          latch.countDown();
+        } else {
+          log.error("", res.cause());
+          buffer.append("false");
+        }
+        intLatch.countDown();
+      });
     awaitLatch(intLatch);
     return buffer.length() == 0;
   }
 
 
-
   private void fillUserAuthorizations(User user, Handler<AsyncResult<Void>> handler) {
-    getAuthorizationProvider().getAuthorizations(user, handler);
+    getAuthorizationProvider().getAuthorizations(user).onComplete(handler);
   }
 
   public Future<String> insertAuth(String username, List<String> roles, List<String> permissions) {
@@ -198,16 +198,10 @@ public class MongoAuthorizationTest extends MongoAuthenticationTest {
     user.put(authorizationOptions.getRoleField(), roles);
     user.put(authorizationOptions.getPermissionField(), permissions);
 
-    Promise promise = Promise.promise();
-    try {
-      getMongoClient().save(authorizationOptions.getCollectionName(), user, promise);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-    return promise.future();
+    return getMongoClient().save(authorizationOptions.getCollectionName(), user);
   }
 
-  private class InternalUser {
+  private static class InternalUser {
     String username;
     String password;
     List<String> roles;
