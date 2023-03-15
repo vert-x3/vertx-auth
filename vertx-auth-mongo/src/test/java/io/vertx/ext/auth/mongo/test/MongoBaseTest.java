@@ -17,7 +17,6 @@
 package io.vertx.ext.auth.mongo.test;
 
 import io.vertx.core.Future;
-import io.vertx.core.Promise;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
@@ -113,18 +112,22 @@ public abstract class MongoBaseTest extends VertxTestBase {
    * @throws Exception
    *           any Exception by submethods
    */
-  public MongoClient getMongoClient() throws Exception {
+  public MongoClient getMongoClient() {
     if (mongoClient == null) {
       initMongoClient();
     }
     return mongoClient;
   }
 
-  private void initMongoClient() throws Exception {
-    CountDownLatch latch = new CountDownLatch(1);
-    mongoClient = MongoClient.createShared(vertx, getConfig());
-    dropCollections(latch);
-    awaitLatch(latch);
+  private void initMongoClient() {
+    try {
+      CountDownLatch latch = new CountDownLatch(1);
+      mongoClient = MongoClient.createShared(vertx, getConfig());
+      dropCollections(latch);
+      awaitLatch(latch);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -185,13 +188,13 @@ public abstract class MongoBaseTest extends VertxTestBase {
    */
   protected void dropCollections(CountDownLatch latch) {
     // Drop all the collections in the db
-    mongoClient.getCollections(onSuccess(list -> {
+    mongoClient.getCollections().onComplete(onSuccess(list -> {
       AtomicInteger collCount = new AtomicInteger();
       List<String> toDrop = getOurCollections(list);
       int count = toDrop.size();
       if (!toDrop.isEmpty()) {
         for (String collection : toDrop) {
-          mongoClient.dropCollection(collection, onSuccess(v -> {
+          mongoClient.dropCollection(collection).onComplete(onSuccess(v -> {
             if (collCount.incrementAndGet() == count) {
               latch.countDown();
             }
@@ -211,9 +214,7 @@ public abstract class MongoBaseTest extends VertxTestBase {
     user.put(authenticationOptions.getUsernameField(), username);
     user.put(authenticationOptions.getPasswordField(), hashedPassword);
 
-    Promise<String> promise = Promise.promise();
-    getMongoClient().save(authenticationOptions.getCollectionName(), user, promise);
-    return promise.future();
+    return getMongoClient().save(authenticationOptions.getCollectionName(), user);
   }
 
   protected boolean verifyUserData(MongoAuthenticationOptions authenticationOptions) throws Exception {
@@ -221,7 +222,7 @@ public abstract class MongoBaseTest extends VertxTestBase {
     CountDownLatch intLatch = new CountDownLatch(1);
     String collectionName = authenticationOptions.getCollectionName();
     log.info("verifyUserData in " + collectionName);
-    getMongoClient().find(collectionName, new JsonObject(), res -> {
+    getMongoClient().find(collectionName, new JsonObject()).onComplete(res -> {
       if (res.succeeded()) {
         log.info(res.result().size() + " users found: " + res.result());
 

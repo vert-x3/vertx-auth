@@ -19,6 +19,8 @@ package examples;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.ext.auth.authentication.Credentials;
+import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.authorization.PermissionBasedAuthorization;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.auth.mongo.MongoAuthentication;
@@ -39,11 +41,10 @@ public class AuthMongoExamples {
   }
 
   public void example2(MongoAuthentication authProvider) {
-    JsonObject authInfo = new JsonObject()
-      .put("username", "tim")
-      .put("password", "sausages");
+    Credentials credentials =
+      new UsernamePasswordCredentials("tim", "sausages");
 
-    authProvider.authenticate(authInfo)
+    authProvider.authenticate(credentials)
       .onSuccess(user -> System.out.println("User: " + user.principal()))
       .onFailure(err -> {
         // Failed!

@@ -16,11 +16,7 @@
 
 package io.vertx.ext.auth.mongo.impl;
 
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
@@ -37,7 +33,6 @@ import java.util.Objects;
  * @author mremme
  */
 public class MongoAuthorizationImpl implements MongoAuthorization {
-  private static final Logger log = LoggerFactory.getLogger(MongoAuthorizationImpl.class);
   private final MongoClient mongoClient;
   private final String providerId;
   private final MongoAuthorizationOptions options;
@@ -68,12 +63,6 @@ public class MongoAuthorizationImpl implements MongoAuthorization {
   @Override
   public String getId() {
     return providerId;
-  }
-
-  @Override
-  public void getAuthorizations(User user, Handler<AsyncResult<Void>> handler) {
-    getAuthorizations(user)
-      .onComplete(handler);
   }
 
   @Override

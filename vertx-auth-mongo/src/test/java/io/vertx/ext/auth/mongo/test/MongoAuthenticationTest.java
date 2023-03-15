@@ -19,6 +19,7 @@ package io.vertx.ext.auth.mongo.test;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.mongo.MongoAuthentication;
 import io.vertx.ext.auth.mongo.MongoAuthenticationOptions;
@@ -84,7 +85,7 @@ public class MongoAuthenticationTest extends MongoBaseTest {
   @Test
   public void testAuthenticate() {
     UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("tim", "sausages");
-    getAuthenticationProvider().authenticate(credentials, onSuccess(user -> {
+    getAuthenticationProvider().authenticate(credentials).onComplete(onSuccess(user -> {
       assertNotNull(user);
       testComplete();
     }));
@@ -94,7 +95,7 @@ public class MongoAuthenticationTest extends MongoBaseTest {
   @Test
   public void testAuthenticateFailBadPwd() {
     UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("tim", "eggs");
-    getAuthenticationProvider().authenticate(credentials, onFailure(v -> {
+    getAuthenticationProvider().authenticate(credentials).onComplete(onFailure(v -> {
       assertTrue(v instanceof Exception);
       testComplete();
     }));
@@ -104,7 +105,7 @@ public class MongoAuthenticationTest extends MongoBaseTest {
   @Test
   public void testAuthenticateFailBadUser() {
     UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("blah", "whatever");
-    getAuthenticationProvider().authenticate(credentials, onFailure(v -> {
+    getAuthenticationProvider().authenticate(credentials).onComplete(onFailure(v -> {
       assertTrue(v instanceof Exception);
       testComplete();
     }));
@@ -117,9 +118,8 @@ public class MongoAuthenticationTest extends MongoBaseTest {
         .setCollectionName(createCollectionName(MongoAuthentication.DEFAULT_COLLECTION_NAME))
         .setUsernameCredentialField("login")
         .setPasswordCredentialField("pwd");
-    JsonObject credentials = new JsonObject()
-        .put("login", "tim")
-        .put("pwd", "sausages");
+    Credentials credentials = new UsernamePasswordCredentials(
+      "tim", "sausages");
     getAuthenticationProvider(options).authenticate(credentials)
       .onSuccess(user -> {
         log.info("authenticated user: " + user);
