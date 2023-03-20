@@ -20,11 +20,14 @@ import io.vertx.core.Future;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.User;
+import io.vertx.ext.auth.authorization.Authorization;
 import io.vertx.ext.auth.authorization.PermissionBasedAuthorization;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
 import io.vertx.ext.auth.mongo.*;
 import io.vertx.ext.mongo.MongoClient;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -70,21 +73,23 @@ public class MongoAuthorizationImpl implements MongoAuthorization {
     JsonObject query = createQuery(user.principal().getString(options.getUsernameField()));
     return mongoClient.find(options.getCollectionName(), query)
       .compose(res -> {
+        final Set<Authorization> authorizations = new HashSet<>();
         for (JsonObject jsonObject : res) {
           JsonArray roles = jsonObject.getJsonArray(options.getRoleField());
           if (roles != null) {
             for (int i = 0; i < roles.size(); i++) {
               String role = roles.getString(i);
-              user.authorizations().add(providerId, RoleBasedAuthorization.create(role));
+              authorizations.add(RoleBasedAuthorization.create(role));
             }
           }
           JsonArray permissions = jsonObject.getJsonArray(options.getPermissionField());
           if (permissions != null) {
             for (int i = 0; i < permissions.size(); i++) {
               String permission = permissions.getString(i);
-              user.authorizations().add(providerId, PermissionBasedAuthorization.create(permission));
+              authorizations.add(PermissionBasedAuthorization.create(permission));
             }
           }
+          user.authorizations().put(providerId, authorizations);
         }
         return Future.succeededFuture();
       });
