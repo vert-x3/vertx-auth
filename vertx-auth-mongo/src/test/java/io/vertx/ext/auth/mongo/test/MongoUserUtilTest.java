@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import javax.swing.*;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -68,7 +69,11 @@ public class MongoUserUtilTest extends MongoBaseTest {
       .flatMap(user -> authzProvider.getAuthorizations(user).map(v -> user))
       .onFailure(this::fail)
       .onSuccess(user -> {
-        Set<Authorization> auths = user.authorizations().get("abc");
+        Set<Authorization> auths = new HashSet<>();
+
+        user.authorizations()
+          .forEach("abc", auths::add);
+
         assertTrue(auths.contains(RoleBasedAuthorization.create("a")));
         assertTrue(auths.contains(RoleBasedAuthorization.create("b")));
         assertFalse(auths.contains(RoleBasedAuthorization.create("c")));

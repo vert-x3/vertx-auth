@@ -6,5 +6,3 @@ image:https://github.com/vert-x3/vertx-auth/actions/workflows/ci-4.x.yml/badge.s
 This module contains auth implementations for
 
 - vertx-auth-mongo
-- vertx-auth-jdbc
-- vertx-auth-shiro
