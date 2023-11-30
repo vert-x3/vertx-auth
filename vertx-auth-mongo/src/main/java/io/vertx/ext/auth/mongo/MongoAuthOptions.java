@@ -16,6 +16,7 @@
 package io.vertx.ext.auth.mongo;
 
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.JsonGen;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.mongo.MongoClient;
@@ -26,7 +27,8 @@ import io.vertx.ext.mongo.MongoClient;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  * @deprecated This class has been replaced by the class {@link io.vertx.ext.auth.mongo.MongoAuthenticationOptions} for authentication and {@link io.vertx.ext.auth.mongo.MongoAuthorizationOptions} for authorization
  */
-@DataObject(generateConverter = true)
+@DataObject
+@JsonGen(publicConverter = false)
 @Deprecated
 public class MongoAuthOptions implements io.vertx.ext.auth.AuthOptions {
 

@@ -17,6 +17,7 @@ package io.vertx.ext.auth.shiro;
 
 
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.annotations.JsonGen;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.AuthProvider;
@@ -27,7 +28,8 @@ import io.vertx.ext.auth.AuthProvider;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@DataObject(generateConverter = true)
+@DataObject
+@JsonGen(publicConverter = false)
 @Deprecated
 public class ShiroAuthOptions implements io.vertx.ext.auth.AuthOptions {
 
