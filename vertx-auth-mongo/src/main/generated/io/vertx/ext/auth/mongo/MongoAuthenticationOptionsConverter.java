@@ -17,7 +17,7 @@ public class MongoAuthenticationOptionsConverter {
   private static final Base64.Decoder BASE64_DECODER = JsonUtil.BASE64_DECODER;
   private static final Base64.Encoder BASE64_ENCODER = JsonUtil.BASE64_ENCODER;
 
-  public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthenticationOptions obj) {
+   static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthenticationOptions obj) {
     for (java.util.Map.Entry<String, Object> member : json) {
       switch (member.getKey()) {
         case "collectionName":
@@ -25,9 +25,9 @@ public class MongoAuthenticationOptionsConverter {
             obj.setCollectionName((String)member.getValue());
           }
           break;
-        case "passwordCredentialField":
+        case "usernameField":
           if (member.getValue() instanceof String) {
-            obj.setPasswordCredentialField((String)member.getValue());
+            obj.setUsernameField((String)member.getValue());
           }
           break;
         case "passwordField":
@@ -40,25 +40,25 @@ public class MongoAuthenticationOptionsConverter {
             obj.setUsernameCredentialField((String)member.getValue());
           }
           break;
-        case "usernameField":
+        case "passwordCredentialField":
           if (member.getValue() instanceof String) {
-            obj.setUsernameField((String)member.getValue());
+            obj.setPasswordCredentialField((String)member.getValue());
           }
           break;
       }
     }
   }
 
-  public static void toJson(MongoAuthenticationOptions obj, JsonObject json) {
+   static void toJson(MongoAuthenticationOptions obj, JsonObject json) {
     toJson(obj, json.getMap());
   }
 
-  public static void toJson(MongoAuthenticationOptions obj, java.util.Map<String, Object> json) {
+   static void toJson(MongoAuthenticationOptions obj, java.util.Map<String, Object> json) {
     if (obj.getCollectionName() != null) {
       json.put("collectionName", obj.getCollectionName());
     }
-    if (obj.getPasswordCredentialField() != null) {
-      json.put("passwordCredentialField", obj.getPasswordCredentialField());
+    if (obj.getUsernameField() != null) {
+      json.put("usernameField", obj.getUsernameField());
     }
     if (obj.getPasswordField() != null) {
       json.put("passwordField", obj.getPasswordField());
@@ -66,8 +66,8 @@ public class MongoAuthenticationOptionsConverter {
     if (obj.getUsernameCredentialField() != null) {
       json.put("usernameCredentialField", obj.getUsernameCredentialField());
     }
-    if (obj.getUsernameField() != null) {
-      json.put("usernameField", obj.getUsernameField());
+    if (obj.getPasswordCredentialField() != null) {
+      json.put("passwordCredentialField", obj.getPasswordCredentialField());
     }
   }
 }

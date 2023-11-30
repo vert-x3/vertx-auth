@@ -17,7 +17,7 @@ public class MongoAuthorizationOptionsConverter {
   private static final Base64.Decoder BASE64_DECODER = JsonUtil.BASE64_DECODER;
   private static final Base64.Encoder BASE64_ENCODER = JsonUtil.BASE64_ENCODER;
 
-  public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthorizationOptions obj) {
+   static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthorizationOptions obj) {
     for (java.util.Map.Entry<String, Object> member : json) {
       switch (member.getKey()) {
         case "collectionName":
@@ -25,9 +25,9 @@ public class MongoAuthorizationOptionsConverter {
             obj.setCollectionName((String)member.getValue());
           }
           break;
-        case "permissionField":
+        case "usernameField":
           if (member.getValue() instanceof String) {
-            obj.setPermissionField((String)member.getValue());
+            obj.setUsernameField((String)member.getValue());
           }
           break;
         case "roleField":
@@ -35,31 +35,31 @@ public class MongoAuthorizationOptionsConverter {
             obj.setRoleField((String)member.getValue());
           }
           break;
-        case "usernameField":
+        case "permissionField":
           if (member.getValue() instanceof String) {
-            obj.setUsernameField((String)member.getValue());
+            obj.setPermissionField((String)member.getValue());
           }
           break;
       }
     }
   }
 
-  public static void toJson(MongoAuthorizationOptions obj, JsonObject json) {
+   static void toJson(MongoAuthorizationOptions obj, JsonObject json) {
     toJson(obj, json.getMap());
   }
 
-  public static void toJson(MongoAuthorizationOptions obj, java.util.Map<String, Object> json) {
+   static void toJson(MongoAuthorizationOptions obj, java.util.Map<String, Object> json) {
     if (obj.getCollectionName() != null) {
       json.put("collectionName", obj.getCollectionName());
     }
-    if (obj.getPermissionField() != null) {
-      json.put("permissionField", obj.getPermissionField());
+    if (obj.getUsernameField() != null) {
+      json.put("usernameField", obj.getUsernameField());
     }
     if (obj.getRoleField() != null) {
       json.put("roleField", obj.getRoleField());
     }
-    if (obj.getUsernameField() != null) {
-      json.put("usernameField", obj.getUsernameField());
+    if (obj.getPermissionField() != null) {
+      json.put("permissionField", obj.getPermissionField());
     }
   }
 }

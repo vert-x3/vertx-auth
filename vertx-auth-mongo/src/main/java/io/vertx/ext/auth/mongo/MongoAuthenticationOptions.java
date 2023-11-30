@@ -16,6 +16,7 @@
 package io.vertx.ext.auth.mongo;
 
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.json.annotations.JsonGen;
 import io.vertx.core.json.JsonObject;
 
 /**
@@ -24,7 +25,8 @@ import io.vertx.core.json.JsonObject;
  * @author francoisprunier
  *
  */
-@DataObject(generateConverter = true)
+@DataObject
+@JsonGen(publicConverter = false)
 public class MongoAuthenticationOptions {
 
   private String collectionName;
