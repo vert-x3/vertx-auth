@@ -17,7 +17,7 @@ public class JDBCAuthenticationOptionsConverter {
   private static final Base64.Decoder BASE64_DECODER = JsonUtil.BASE64_DECODER;
   private static final Base64.Encoder BASE64_ENCODER = JsonUtil.BASE64_ENCODER;
 
-  public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, JDBCAuthenticationOptions obj) {
+   static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, JDBCAuthenticationOptions obj) {
     for (java.util.Map.Entry<String, Object> member : json) {
       switch (member.getKey()) {
         case "authenticationQuery":
@@ -29,11 +29,11 @@ public class JDBCAuthenticationOptionsConverter {
     }
   }
 
-  public static void toJson(JDBCAuthenticationOptions obj, JsonObject json) {
+   static void toJson(JDBCAuthenticationOptions obj, JsonObject json) {
     toJson(obj, json.getMap());
   }
 
-  public static void toJson(JDBCAuthenticationOptions obj, java.util.Map<String, Object> json) {
+   static void toJson(JDBCAuthenticationOptions obj, java.util.Map<String, Object> json) {
     if (obj.getAuthenticationQuery() != null) {
       json.put("authenticationQuery", obj.getAuthenticationQuery());
     }

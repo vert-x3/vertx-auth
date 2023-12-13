@@ -17,7 +17,7 @@ public class MongoAuthorizationOptionsConverter {
   private static final Base64.Decoder BASE64_DECODER = JsonUtil.BASE64_DECODER;
   private static final Base64.Encoder BASE64_ENCODER = JsonUtil.BASE64_ENCODER;
 
-  public static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthorizationOptions obj) {
+   static void fromJson(Iterable<java.util.Map.Entry<String, Object>> json, MongoAuthorizationOptions obj) {
     for (java.util.Map.Entry<String, Object> member : json) {
       switch (member.getKey()) {
         case "collectionName":
@@ -44,11 +44,11 @@ public class MongoAuthorizationOptionsConverter {
     }
   }
 
-  public static void toJson(MongoAuthorizationOptions obj, JsonObject json) {
+   static void toJson(MongoAuthorizationOptions obj, JsonObject json) {
     toJson(obj, json.getMap());
   }
 
-  public static void toJson(MongoAuthorizationOptions obj, java.util.Map<String, Object> json) {
+   static void toJson(MongoAuthorizationOptions obj, java.util.Map<String, Object> json) {
     if (obj.getCollectionName() != null) {
       json.put("collectionName", obj.getCollectionName());
     }
