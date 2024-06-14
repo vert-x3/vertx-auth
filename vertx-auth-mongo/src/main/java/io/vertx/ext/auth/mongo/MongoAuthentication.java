@@ -74,14 +74,14 @@ public interface MongoAuthentication extends AuthenticationProvider {
   /**
    * Hashes a password to be stored.
    *
-   * See: {@link io.vertx.ext.auth.HashingStrategy#hash(String, Map, String, String)}
+   * See: {@link io.vertx.ext.auth.hashing.HashingStrategy#hash(String, Map, String, String)}
    */
   String hash(String id, Map<String, String> params, String salt, String password);
 
   /**
    * Hashes a password to be stored.
    *
-   * See: {@link io.vertx.ext.auth.HashingStrategy#hash(String, Map, String, String)}
+   * See: {@link io.vertx.ext.auth.hashing.HashingStrategy#hash(String, Map, String, String)}
    */
   default String hash(String id, String salt, String password) {
     return hash(id, null, salt, password);

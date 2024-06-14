@@ -82,7 +82,7 @@ public interface MongoUserUtil {
    * @param username
    *          the username to be set
    * @param hash
-   *          the password hash, as result of {@link io.vertx.ext.auth.HashingStrategy#hash(String, Map, String, String)}
+   *          the password hash, as result of {@link io.vertx.ext.auth.hashing.HashingStrategy#hash(String, Map, String, String)}
    * @param resultHandler
    *          the ResultHandler will be provided with the result of the operation and the created user document identifier
    * @return fluent self

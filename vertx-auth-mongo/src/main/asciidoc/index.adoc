@@ -57,7 +57,7 @@ You can also change all the defaults for the mongo collection and column names u
 {@link io.vertx.ext.auth.mongo.MongoAuthenticationOptions#setPasswordField(String)}
 if you want to adapt that to your needs.
 
-The default implementation assumes that the password is stored in the database according to the generic {@link io.vertx.ext.auth.HashingStrategy} (so the salt is stored in the hash).
+The default implementation assumes that the password is stored in the database according to the generic {@link io.vertx.ext.auth.hashing.HashingStrategy} (so the salt is stored in the hash).
 
 == Vertx Auth JDBC and GDPR
 
