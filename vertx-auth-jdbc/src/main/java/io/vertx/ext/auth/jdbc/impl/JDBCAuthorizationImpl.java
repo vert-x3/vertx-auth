@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.ext.auth.authorization.Authorization;
 import io.vertx.ext.auth.authorization.PermissionBasedAuthorization;
 import io.vertx.ext.auth.authorization.RoleBasedAuthorization;
-import io.vertx.ext.auth.User;
+import io.vertx.ext.auth.user.User;
 import io.vertx.ext.auth.jdbc.JDBCAuthorization;
 import io.vertx.ext.auth.jdbc.JDBCAuthorizationOptions;
 import io.vertx.ext.jdbc.JDBCClient;
