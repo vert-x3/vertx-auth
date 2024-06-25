@@ -19,7 +19,7 @@ package io.vertx.ext.auth.mongo.impl;
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.hashing.HashingStrategy;
-import io.vertx.ext.auth.user.User;
+import io.vertx.ext.auth.User;
 import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.mongo.*;
