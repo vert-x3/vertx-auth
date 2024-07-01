@@ -59,20 +59,7 @@ public interface MongoUserUtil {
    *          the username to be set
    * @param password
    *          the password in clear text, will be adapted following the definitions of the defined strategy
-   * @param resultHandler
-   *          the ResultHandler will be provided with the result of the operation and the created user document identifier
-   * @return fluent self
-   */
-  @Fluent
-  default MongoUserUtil createUser(String username, String password, Handler<AsyncResult<String>> resultHandler) {
-    createUser(username, password)
-      .onComplete(resultHandler);
-
-    return this;
-  }
-
-  /**
-   * @see #createUser(String, String, Handler).
+   * @return the future provided with the result of the operation and the created user document identifier
    */
   Future<String> createUser(String username, String password);
 
