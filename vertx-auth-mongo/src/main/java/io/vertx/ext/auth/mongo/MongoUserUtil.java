@@ -59,7 +59,7 @@ public interface MongoUserUtil {
    *          the username to be set
    * @param password
    *          the password in clear text, will be adapted following the definitions of the defined strategy
-   * @return the future provided with the result of the operation and the created user document identifier
+   * @return a future provided with the result of the operation and the created user document identifier
    */
   Future<String> createUser(String username, String password);
 
@@ -70,46 +70,20 @@ public interface MongoUserUtil {
    *          the username to be set
    * @param hash
    *          the password hash, as result of {@link io.vertx.ext.auth.hashing.HashingStrategy#hash(String, Map, String, String)}
-   * @param resultHandler
-   *          the ResultHandler will be provided with the result of the operation and the created user document identifier
-   * @return fluent self
-   */
-  @Fluent
-  default MongoUserUtil createHashedUser(String username, String hash, Handler<AsyncResult<String>> resultHandler) {
-    createHashedUser(username, hash)
-      .onComplete(resultHandler);
-
-    return this;
-  }
-
-  /**
-   * @see #createHashedUser(String, String, Handler).
+   * @return a future provided with the result of the operation and the created user document identifier
    */
   Future<String> createHashedUser(String username, String hash);
 
   /**
    * Insert a user role into a database.
    *
-   * @param username
+   * @param user
    *          the username to be set
    * @param roles
    *          a to be set
    * @param permissions
    *          a to be set
-   * @param resultHandler
-   *          the ResultHandler will be provided with the result of the operation and the created user document identifier
-   * @return fluent self
-   */
-  @Fluent
-  default MongoUserUtil createUserRolesAndPermissions(String username, List<String> roles, List<String> permissions, Handler<AsyncResult<String>> resultHandler) {
-    createUserRolesAndPermissions(username, roles, permissions)
-      .onComplete(resultHandler);
-
-    return this;
-  }
-
-  /**
-   * @see #createUserRolesAndPermissions(String, List, List, Handler).
+   * @return a future provided with the result of the operation and the created user document identifier
    */
   Future<String> createUserRolesAndPermissions(String user, List<String> roles, List<String> permissions);
 }
