@@ -31,6 +31,7 @@
   </properties>
 
   <artifactId>vertx-auth-shiro</artifactId>
+  <name>Vert.x Auth Shiro</name>
 
   <dependencies>
     <dependency>

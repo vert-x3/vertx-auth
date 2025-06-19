@@ -25,6 +25,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>vertx-auth-mongo</artifactId>
+  <name>Vert.x Auth Mongo</name>
 
   <properties>
     <doc.skip>false</doc.skip>
