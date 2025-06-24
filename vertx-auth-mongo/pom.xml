@@ -26,6 +26,8 @@
 
   <artifactId>vertx-auth-mongo</artifactId>
 
+  <name>Vert.x Auth Mongo</name>
+
   <properties>
     <doc.skip>false</doc.skip>
   </properties>
