@@ -32,7 +32,7 @@
   </parent>
 
   <artifactId>vertx-auth</artifactId>
-  <version>4.5.18-SNAPSHOT</version>
+  <version>4.5.18</version>
 
   <name>Vert.x Auth</name>
 
