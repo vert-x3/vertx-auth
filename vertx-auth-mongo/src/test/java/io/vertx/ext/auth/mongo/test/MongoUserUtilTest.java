@@ -16,7 +16,6 @@
 
 package io.vertx.ext.auth.mongo.test;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.auth.authentication.Credentials;
 import io.vertx.ext.auth.authentication.UsernamePasswordCredentials;
 import io.vertx.ext.auth.authorization.Authorization;
